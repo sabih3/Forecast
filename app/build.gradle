@@ -14,7 +14,7 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -47,8 +47,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
     testImplementation 'org.mockito:mockito-core:2.28.2'
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
 
     //RecyclerView
     implementation "androidx.recyclerview:recyclerview:1.1.0"
@@ -88,7 +88,11 @@ dependencies {
     //DateTime
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.3'
 
-    testImplementation 'org.mockito:mockito-inline:2.13.0'
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.0-alpha04"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.0-alpha04"
 
+    //Multidex
+    implementation 'androidx.multidex:multidex:2.0.1'
 
 }

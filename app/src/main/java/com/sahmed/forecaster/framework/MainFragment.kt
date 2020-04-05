@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 
 import com.sahmed.forecaster.R
 import com.sahmed.forecaster.framework.presentation.cities_weather.ScreenWeatherList
@@ -38,13 +39,13 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btn_cities_weather.setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.container,
-                ScreenWeatherList.newInstance("",""))?.commit()
+            findNavController().navigate(R.id.action_mainFragment_to_screenWeatherList)
+
         }
 
         btn_current_forecast.setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.container,
-                ScreenWeatherForecast.newInstance("",""))?.commit()
+            findNavController().navigate(R.id.action_mainFragment_to_screenWeatherForecast)
+
         }
     }
     companion object {

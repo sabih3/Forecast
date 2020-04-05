@@ -8,5 +8,6 @@
     <color name="btn_background">@android:color/black</color>
     <color name="colorYellowish">#F5BC41</color>
     <color name="colorGreenish">#54B33B</color>
+    <color name="black_overlay">#66000000</color>
 
 </resources>

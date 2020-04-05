@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.sahmed.forecaster.framework.MainFragment"
+        android:label="Forecaster" >
+        <action
+            android:id="@+id/action_mainFragment_to_screenWeatherList"
+            app:destination="@id/screenWeatherList"
+            />
+        <action
+            android:id="@+id/action_mainFragment_to_screenWeatherForecast"
+            app:destination="@id/screenWeatherForecast" />
+    </fragment>
+    <fragment
+        android:id="@+id/screenWeatherList"
+        android:name="com.sahmed.forecaster.framework.presentation.cities_weather.ScreenWeatherList"
+        android:label="City Weathers Information" />
+    <fragment
+        android:id="@+id/screenWeatherForecast"
+        android:name="com.sahmed.forecaster.framework.presentation.city_forecast.ScreenWeatherForecast"
+        android:label="Current City Forecast"
+        tools:layout="@layout/screen_weather_forecast" />
+</navigation>
