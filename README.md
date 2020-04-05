@@ -25,6 +25,7 @@ The project contains following Unit Testable files.
 2) app/src/test/framework/CityWeatherRemoteRepositoryTest.kt
 3) app/src/test/framework/ForecastRemoteRepositoryTest.kt
 4) app/src/androidTest/FileUtilsTest
+5) app/src/androidTest/ScreenCityWeathersListTest.kt
 
 To run the tests, open the desired file, and click on small green colored play icon, placed just beside the file name.This will run all tests of that file. Individual tests can also be executed, by simply clicking the green play button beside the test method name.  
 
