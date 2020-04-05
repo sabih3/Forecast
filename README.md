@@ -3,7 +3,7 @@
   
 # About Project
   This project is built on MVVM architecture & repository pattern along with Unit Tests coverage.
-  The unit tests have been written for repoistory,VM,Screens & some utilities which have been used in the code.
+  The unit tests have been written for repoistory,Screens & some utilities which have been used in the code.
   
 # Build and Execution
 
@@ -26,6 +26,8 @@ The project contains following Unit Testable files.
 3) app/src/test/framework/ForecastRemoteRepositoryTest.kt
 4) app/src/androidTest/FileUtilsTest
 5) app/src/androidTest/ScreenCityWeathersListTest.kt
+6) app/src/androidTest/MainFragmentTest.kt
+7) app/src/androidTest/ScreenWeatherForecastTest.kt
 
 To run the tests, open the desired file, and click on small green colored play icon, placed just beside the file name.This will run all tests of that file. Individual tests can also be executed, by simply clicking the green play button beside the test method name.  
 
