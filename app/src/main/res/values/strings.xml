@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Forecaster</string>
+
+    <string name="validation_length_city_names">City names must be 3,less than 7</string>
+
+                <!--    Exception Errors for UI -->
+    <string name="error_general"></string>
+    <string name="error_network">Seems like you are not connected to Network</string>
+    <string name="error_empty">We couldn\'t find the data right now</string>
+
+</resources>
