@@ -38,6 +38,8 @@ class CityWeatherRemoteRepository(val remoteDataSource: APIs):BaseRepo() {
             }else{
                 callback.onEmpty()
             }
+        }else{
+            callback.onEmpty()
         }
     }
 

@@ -97,13 +97,18 @@ class ScreenCityWeathersList : Fragment() {
     private fun performSearch() {
 
         var input_city_names = search_field.text.toString().trim().split(",")
-
         if(input_city_names.size>=3 && input_city_names.size<=7){
             progressToShow(true)
             list = mutableListOf()
             val cityIDs = CityIDExtractor.getCityIDs(activity!!, input_city_names)
-            viewModel.getCityWeather(cityIDs)
-            viewModel.observationState.observe(viewLifecycleOwner,Observer{ObserveSearchResults()})
+            if(cityIDs.isEmpty()){
+                progressToShow(false)
+                search_field.setError(getString(R.string.validation_city_names_invalid))
+            }else{
+                viewModel.getCityWeather(cityIDs)
+                viewModel.observationState.observe(viewLifecycleOwner,Observer{ObserveSearchResults()})
+            }
+
 
         }else{
             progressToShow(false)

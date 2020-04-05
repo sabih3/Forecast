@@ -61,6 +61,22 @@ class CityWeatherRemoteRepositoryTest {
     }
 
     @Test
+    fun handleResponse_Non_Success(){
+        var response = Mockito.mock(Response::class.java)
+        var responseCityWeather = Mockito.mock(ResponseCityWeather::class.java)
+        val callback = Mockito.mock(CityWeatherRemoteRepository.CityWeatherCallback::class.java)
+
+        var weatherList = Collections.singletonList(Mockito.mock(CityWeathers::class.java))
+
+        Mockito.doReturn(false).`when`(response).isSuccessful
+        Mockito.doReturn(responseCityWeather).`when`(response).body()
+        Mockito.doReturn(weatherList).`when`(responseCityWeather).list
+
+        cityWeatherRepository.handleResponse(response as Response<ResponseCityWeather>,callback)
+
+        Mockito.verify(callback,Mockito.times(1)).onEmpty()
+    }
+    @Test
     fun handleResponseEmpty(){
 
         var response = Mockito.mock(Response::class.java)

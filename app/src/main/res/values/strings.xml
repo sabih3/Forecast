@@ -2,7 +2,7 @@
     <string name="app_name">Forecaster</string>
 
     <string name="validation_length_city_names">City names must be 3,less than 7</string>
-
+    <string name="validation_city_names_invalid">We were unable to find these cities on our records</string>
                 <!--    Exception Errors for UI -->
     <string name="error_general"></string>
     <string name="error_network">Seems like you are not connected to Network</string>
