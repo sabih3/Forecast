@@ -15,6 +15,8 @@ File -> New -> Project from Version Control -> Git and then inserting this repos
 
 2) Downloading project as zip and then extracting the files on any location of choice. Then opening the project in Android Studio. For that, Open Android Studio, then choose File -> Open-> Navigate to extracted project folder, then click Open.
 
+Note: This project may require the lates Android Studio version to build, i.e.3.6.1
+
 # Step 2- Building the project
 Once the project is opened in Android Studio, the project will automatically start to build itself.After successful build, run the project on any Virtual Device, or attach any physical device with USB Debugging Enabled to run it on physical device.
   
