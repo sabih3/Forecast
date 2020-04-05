@@ -5,6 +5,7 @@ import com.sahmed.core.domain.forecast.ForecastPresentationMapper
 import com.sahmed.core.domain.forecast.ResponseForecast
 import com.sahmed.forecaster.framework.network.APIs
 import com.sahmed.forecaster.framework.network.BaseCallback
+import com.sahmed.forecaster.framework.network.BaseRepo
 import com.sahmed.forecaster.framework.network.RestClient
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.Call
@@ -13,7 +14,7 @@ import retrofit2.Response
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-class ForecastRemoteRepository(val remoteDatSource:APIs) {
+class ForecastRemoteRepository(val remoteDatSource:APIs):BaseRepo() {
 
 
     fun getForecast(lat: Double, lon: Double, callback: ForecastCallback){
@@ -36,7 +37,7 @@ class ForecastRemoteRepository(val remoteDatSource:APIs) {
     fun handleResponse(
         response: Response<ResponseForecast>, callback: ForecastCallback) {
         if(response.isSuccessful){
-            if(!response.body()?.list!!.isEmpty()){
+            if(response.body()!=null){
                 var list = response.body()!!.list.let {
                     ForecastPresentationMapper().mapFrom(it)
                 }
@@ -46,16 +47,6 @@ class ForecastRemoteRepository(val remoteDatSource:APIs) {
             }
         }
     }
-
-    fun handleErrorResponse(t: Throwable, callback: ForecastCallback) {
-        if(t is UnknownHostException || t is SocketTimeoutException){
-            //most probably Internet issue
-            callback.onNetworkIssue()
-        }else{
-            callback.onFailure()
-        }
-    }
-
 
     interface ForecastCallback:BaseCallback{
         fun onSuccess(it: List<Forecast>)

@@ -1,18 +1,20 @@
 package com.sahmed.forecaster.framework.presentation.city_forecast
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sahmed.core.domain.forecast.Forecast
 import com.sahmed.forecaster.framework.network.repo.CityWeatherRemoteRepository
 import com.sahmed.forecaster.framework.ForecastRemoteRepository
 import com.sahmed.forecaster.framework.ForecasterViewModel
+import com.sahmed.forecaster.framework.presentation.cities_weather.CityWeathersViewModel
 
 class WeatherForecastViewModel(application: Application,
                                cityWeatherRemoteRepository: CityWeatherRemoteRepository,
                                forecastRemoteRepository: ForecastRemoteRepository): ForecasterViewModel(application, cityWeatherRemoteRepository,forecastRemoteRepository) {
 
     private val responseState = MutableLiveData<ForecastResponseState>()
-    val forecastData = responseState
+    val forecastData : LiveData<ForecastResponseState> = responseState
 
 
     sealed class ForecastResponseState(){

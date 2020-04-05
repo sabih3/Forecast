@@ -44,11 +44,21 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.core:core-ktx:1.0.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.12'
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.fragment:fragment-testing:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.1.1'
+    androidTestImplementation 'androidx.test.ext:truth:1.1.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     testImplementation 'org.mockito:mockito-core:2.28.2'
     testImplementation 'org.mockito:mockito-inline:2.13.0'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'io.mockk:mockk:1.9.3'
+    testImplementation 'android.arch.core:core-testing:1.1.1'
+
 
     //RecyclerView
     implementation "androidx.recyclerview:recyclerview:1.1.0"

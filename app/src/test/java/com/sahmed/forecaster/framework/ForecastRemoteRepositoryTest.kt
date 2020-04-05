@@ -48,15 +48,15 @@ class ForecastRemoteRepositoryTest {
         var response = Mockito.mock(Response::class.java)
         var responseForecast = Mockito.mock(ResponseForecast::class.java)
         var callback = Mockito.mock(ForecastRemoteRepository.ForecastCallback::class.java)
-        var mockedList = Collections.singletonList(Mockito.mock(Forecast::class.java))
 
+        var mockedList = mutableListOf<Forecast>()//when tests are running without network, callback is returned with zero sized list
         Mockito.doReturn(true).`when`(response).isSuccessful
         Mockito.doReturn(responseForecast).`when`(response).body()
         Mockito.doReturn(mockedList).`when`(responseForecast).list
 
         forecastRepo.handleResponse(response as Response<ResponseForecast>,callback)
 
-        Mockito.verify(callback,Mockito.times(1)).onSuccess(mockedList)
+        Mockito.verify(callback,Mockito.times(1)).onSuccess(mockedList.toList())
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.sahmed.forecaster.framework
 
 import com.sahmed.core.domain.CityWeathers
+import com.sahmed.core.domain.ResponseCityWeather
 import com.sahmed.core.domain.Weather
 import com.sahmed.forecaster.framework.network.APIs
 import com.sahmed.forecaster.framework.network.repo.CityWeatherRemoteRepository
@@ -45,16 +46,16 @@ class CityWeatherRemoteRepositoryTest {
     @Test
     fun handleResponse(){
         var response = Mockito.mock(Response::class.java)
-        var responseCityWeather = Mockito.mock(CityWeathers::class.java)
+        var responseCityWeather = Mockito.mock(ResponseCityWeather::class.java)
         val callback = Mockito.mock(CityWeatherRemoteRepository.CityWeatherCallback::class.java)
 
-        var weatherList = Collections.singletonList(Mockito.mock(Weather::class.java))
+        var weatherList = Collections.singletonList(Mockito.mock(CityWeathers::class.java))
 
         Mockito.doReturn(true).`when`(response).isSuccessful
         Mockito.doReturn(responseCityWeather).`when`(response).body()
-        Mockito.doReturn(weatherList).`when`(responseCityWeather).weather
+        Mockito.doReturn(weatherList).`when`(responseCityWeather).list
 
-        cityWeatherRepository.handleResponse(response as Response<CityWeathers>,callback)
+        cityWeatherRepository.handleResponse(response as Response<ResponseCityWeather>,callback)
 
         Mockito.verify(callback,Mockito.times(1)).onSuccess(weatherList)
     }
@@ -68,7 +69,7 @@ class CityWeatherRemoteRepositoryTest {
 
         Mockito.doReturn(true).`when`(response).isSuccessful
         Mockito.doReturn(responseCityWeather).`when`(response).body()
-        cityWeatherRepository.handleResponse(response as Response<CityWeathers>,callback)
+        cityWeatherRepository.handleResponse(response as Response<ResponseCityWeather>,callback)
         Mockito.verify(callback,Mockito.times(1)).onEmpty()
 
     }

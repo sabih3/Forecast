@@ -1,6 +1,7 @@
 package com.sahmed.forecaster.framework.presentation.cities_weather
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sahmed.core.domain.CityWeathers
 import com.sahmed.forecaster.framework.ForecastRemoteRepository
@@ -14,7 +15,7 @@ class CityWeathersViewModel(application: Application,
     ForecasterViewModel(application,cityWeatherRemoteRepository,forecastRemoteRepository){
 
     private val dataState  = MutableLiveData<ResponseState>()
-    val observationState = dataState
+    val observationState :LiveData<ResponseState> = dataState
 
     sealed class ResponseState {
         object Loading: ResponseState()
