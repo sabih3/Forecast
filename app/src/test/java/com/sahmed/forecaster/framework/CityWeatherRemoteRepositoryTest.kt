@@ -64,11 +64,11 @@ class CityWeatherRemoteRepositoryTest {
     fun handleResponseEmpty(){
 
         var response = Mockito.mock(Response::class.java)
-        var responseCityWeather = Mockito.mock(CityWeathers::class.java)
+        var responseCityWeather = Mockito.mock(ResponseCityWeather::class.java)
         val callback = Mockito.mock(CityWeatherRemoteRepository.CityWeatherCallback::class.java)
 
         Mockito.doReturn(true).`when`(response).isSuccessful
-        Mockito.doReturn(responseCityWeather).`when`(response).body()
+        Mockito.doReturn(null).`when`(response).body()
         cityWeatherRepository.handleResponse(response as Response<ResponseCityWeather>,callback)
         Mockito.verify(callback,Mockito.times(1)).onEmpty()
 

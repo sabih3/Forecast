@@ -67,7 +67,7 @@ class ForecastRemoteRepositoryTest {
         val mockedList = Collections.singletonList(Mockito.mock(Forecast::class.java))
 
         Mockito.doReturn(true).`when`(response).isSuccessful
-        Mockito.doReturn(responseForecast).`when`(response).body()
+        Mockito.doReturn(null).`when`(response).body()
 
         forecastRepo.handleResponse(response as Response<ResponseForecast>,callback)
 
