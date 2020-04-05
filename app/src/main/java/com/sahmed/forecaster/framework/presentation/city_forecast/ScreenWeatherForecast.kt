@@ -8,44 +8,36 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.*
+import com.sahmed.core.domain.forecast.Forecast
 
 import com.sahmed.forecaster.R
-import com.sahmed.forecaster.framework.ForecastRemoteRepository
-import com.sahmed.forecaster.framework.network.ForecastRemoteDataSource
-import com.sahmed.forecaster.framework.network.RestClient
-import kotlinx.coroutines.*
+import com.sahmed.forecaster.framework.ForecasterViewModelFactory
+import kotlinx.android.synthetic.main.screen_weather_forecast.*
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class ScreenWeatherForecast : Fragment() {
     private val PERMISSIONS_REQUEST_LOCATION = 244
-    private var param1: String? = null
-    private var param2: String? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
-    lateinit var weatherForecaseRemoteRepo:ForecastRemoteRepository
-    lateinit var weatherforecastRemoteDatasource : ForecastRemoteDataSource
 
     var lat =MutableLiveData<Double>()
     var lon = MutableLiveData<Double>()
     lateinit var viewModel: WeatherForecastViewModel
+    var adapter = ForecastAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
-        weatherforecastRemoteDatasource = ForecastRemoteDataSource()
-        val remoteDataSources = RestClient.getInstance()
-        weatherForecaseRemoteRepo = ForecastRemoteRepository(remoteDataSources)
 
-        viewModel = WeatherForecastViewModel(activity!!.application,weatherForecaseRemoteRepo)
-
-
+        viewModel = ViewModelProviders.of(this, ForecasterViewModelFactory).get(WeatherForecastViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -58,9 +50,15 @@ class ScreenWeatherForecast : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        initListView()
         checkLocationPermission()
 
+    }
+
+    private fun initListView() {
+        rv_forecast.apply {
+            layoutManager = LinearLayoutManager(activity)
+        }
     }
 
     private fun checkLocationPermission() {
@@ -68,16 +66,12 @@ class ScreenWeatherForecast : Fragment() {
             != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+
             } else {
-                // No explanation needed, we can request the permission.
 
                 requestPermissions(
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION),
                     PERMISSIONS_REQUEST_LOCATION)
-
             }
         }else{
             fetchCurrentLocation()
@@ -109,22 +103,45 @@ class ScreenWeatherForecast : Fragment() {
             if(it!=null){
                 viewModel.fetchForecastOfGeoLoc(it.latitude,it.longitude)
 
-                observeForecastData()
+                viewModel.forecastData.observe(viewLifecycleOwner, Observer {
+                    when(it){
+
+                        is WeatherForecastViewModel.ForecastResponseState.Loading ->{
+                            progressToShow(true)
+                        }
+
+                        is WeatherForecastViewModel.ForecastResponseState.Success ->{
+                            progressToShow(false)
+                            setForecastList(it.response)
+                        }
+
+                        is WeatherForecastViewModel.ForecastResponseState.Empty ->{
+                            progressToShow(false)
+                            getToast(getString(R.string.error_empty)).show()
+
+                        }
+
+                        is WeatherForecastViewModel.ForecastResponseState.UnknownFailure ->{
+                            progressToShow(false)
+                            getToast(getString(R.string.error_general)).show()
+                        }
+
+                        is WeatherForecastViewModel.ForecastResponseState.NetworkFailure ->{
+                            progressToShow(false)
+                            getToast(getString(R.string.error_network)).show()
+                        }
+                    }
+
+                })
             }
 
         }
 
 
     }
-    private fun observeForecastData() {
-
-        viewModel.forecastData.observe(this, Observer {
-            it.size
-        })
-
-
-
-
+    private fun setForecastList(response: List<Forecast>) {
+        adapter.swapData(response)
+        rv_forecast.adapter = adapter
     }
 
     override fun onRequestPermissionsResult(
@@ -146,14 +163,15 @@ class ScreenWeatherForecast : Fragment() {
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ScreenWeatherForecast().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+
+    fun progressToShow(toShow:Boolean){
+        when(toShow){
+            true -> progress.visibility = View.VISIBLE
+            else -> progress.visibility = View.GONE
+        }
+    }
+
+    fun getToast(message:String): Toast {
+        return Toast.makeText(context,message,Toast.LENGTH_LONG)
     }
 }

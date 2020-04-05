@@ -1,41 +1,55 @@
 package com.sahmed.forecaster.framework.presentation.city_forecast
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.sahmed.core.domain.forecast.Forecast
-import com.sahmed.core.domain.forecast.ResponseForecast
+import com.sahmed.forecaster.framework.network.repo.CityWeatherRemoteRepository
 import com.sahmed.forecaster.framework.ForecastRemoteRepository
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.sahmed.forecaster.framework.ForecasterViewModel
 
 class WeatherForecastViewModel(application: Application,
-                               val forecastRemoteRepository: ForecastRemoteRepository): AndroidViewModel(application) {
+                               cityWeatherRemoteRepository: CityWeatherRemoteRepository,
+                               forecastRemoteRepository: ForecastRemoteRepository): ForecasterViewModel(application, cityWeatherRemoteRepository,forecastRemoteRepository) {
 
-    var forecastData = MutableLiveData<List<Forecast>>()
+    private val responseState = MutableLiveData<ForecastResponseState>()
+    val forecastData = responseState
+
+
+    sealed class ForecastResponseState(){
+        object Loading:ForecastResponseState()
+        data class Success(val response:List<Forecast>):ForecastResponseState()
+        object Empty: ForecastResponseState()
+        object UnknownFailure: ForecastResponseState()
+        object NetworkFailure: ForecastResponseState()
+    }
 
     fun fetchForecastOfGeoLoc(lat:Double, lon:Double){
-
+        setResult(ForecastResponseState.Loading)
         forecastRemoteRepository.getForecast(lat,lon,object:ForecastRemoteRepository.ForecastCallback{
             override fun onSuccess(it: List<Forecast>) {
-                forecastData.value = it
+
+                setResult(ForecastResponseState.Success(it))
            }
 
             override fun onNetworkIssue() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                setResult(ForecastResponseState.NetworkFailure)
             }
 
             override fun onFailure() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                setResult(ForecastResponseState.UnknownFailure)
             }
 
             override fun onEmpty() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                setResult(ForecastResponseState.Empty)
             }
 
         })
 
 
+    }
+
+    fun setResult(state:ForecastResponseState){
+        responseState.value = state
     }
 
 }

@@ -37,11 +37,10 @@ class ForecastRemoteRepository(val remoteDatSource:APIs) {
         response: Response<ResponseForecast>, callback: ForecastCallback) {
         if(response.isSuccessful){
             if(!response.body()?.list!!.isEmpty()){
-                val mappedList = response.body()!!.list.map {
-                    ForecastPresentationMapper()
-                }.toList()
-
-                callback.onSuccess(response.body()!!.list)
+                var list = response.body()!!.list.let {
+                    ForecastPresentationMapper().mapFrom(it)
+                }
+                callback.onSuccess(list)
             }else{
                 callback.onEmpty()
             }

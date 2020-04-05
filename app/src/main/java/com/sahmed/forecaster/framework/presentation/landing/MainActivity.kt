@@ -1,4 +1,4 @@
-package com.sahmed.forecaster.framework.presentation
+package com.sahmed.forecaster.framework.presentation.landing
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,7 +6,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.sahmed.forecaster.R
-import com.sahmed.forecaster.framework.MainFragment
 
 class MainActivity : AppCompatActivity() {
 

@@ -2,13 +2,11 @@ package com.sahmed.forecaster.framework
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import com.sahmed.forecaster.framework.ForecasterApplication
-import com.sahmed.forecaster.framework.Interactors
-import com.sahmed.forecaster.framework.network.APIs
+import com.sahmed.forecaster.framework.network.repo.CityWeatherRemoteRepository
 
-open class ForecasterViewModel(application: Application,val interactors: Interactors,
-                                val cityWeatherRemoteRepository: CityWeatherRemoteRepository):
+open class ForecasterViewModel(application: Application,
+                               val cityWeatherRemoteRepository: CityWeatherRemoteRepository,
+                               val forecastRemoteRepository: ForecastRemoteRepository):
     AndroidViewModel(application) {
 
 }

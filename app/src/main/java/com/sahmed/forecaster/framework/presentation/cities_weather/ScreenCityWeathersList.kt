@@ -16,17 +16,11 @@ import com.sahmed.core.domain.CityWeathers
 
 import com.sahmed.forecaster.R
 import com.sahmed.forecaster.framework.ForecasterViewModelFactory
-import com.sahmed.forecaster.framework.utils.CityData
 import com.sahmed.forecaster.framework.utils.CityIDExtractor
-import com.sahmed.forecaster.framework.utils.FileUtils
 import kotlinx.android.synthetic.main.screen_weather_list.*
+import kotlinx.android.synthetic.main.screen_weather_list.progress
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-class ScreenWeatherList : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+class ScreenCityWeathersList : Fragment() {
     var adapter = CityWeathersListAdapter()
     var list = mutableListOf<CityWeathers>()
 
@@ -34,10 +28,6 @@ class ScreenWeatherList : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -60,28 +50,32 @@ class ScreenWeatherList : Fragment() {
     private fun ObserveSearchResults() {
 
         viewModel.observationState.observe(this, Observer {
-            progress.visibility = View.GONE
+
             when(it){
                 is CityWeathersViewModel.ResponseState.Loading->{
-                    progress.visibility = View.VISIBLE
+                    progressToShow(true)
                 }
 
                 is CityWeathersViewModel.ResponseState.Empty ->{
-                    progress.visibility = View.GONE
-                    Toast.makeText(activity,getString(R.string.error_empty),Toast.LENGTH_LONG).show()
+                    progressToShow(false)
+                    getToast(getString(R.string.error_empty))
                 }
 
                 is CityWeathersViewModel.ResponseState.Success->{
-                    list = it.response.toMutableList()
-                    adapter.swapData(list)
+                    progressToShow(false)
+                    setDataInList(it)
+
                 }
 
                 is CityWeathersViewModel.ResponseState.NetworkFailure ->{
-                    Toast.makeText(activity,getString(R.string.error_network),Toast.LENGTH_LONG).show()
+                    progressToShow(false)
+                    getToast(getString(R.string.error_network))
                 }
 
                 is CityWeathersViewModel.ResponseState.UnknownFailure ->{
-                    Toast.makeText(activity,getString(R.string.error_general),Toast.LENGTH_LONG).show()
+                    progressToShow(false)
+                    getToast(getString(R.string.error_general))
+
 
                 }
             }
@@ -101,16 +95,18 @@ class ScreenWeatherList : Fragment() {
     }
 
     private fun performSearch() {
-        progress.visibility = View.VISIBLE
+
         var input_city_names = search_field.text.toString().trim().split(",")
 
         if(input_city_names.size>=3 && input_city_names.size<=7){
+            progressToShow(true)
             list = mutableListOf()
             val cityIDs = CityIDExtractor.getCityIDs(activity!!, input_city_names)
             viewModel.getCityWeather(cityIDs)
             viewModel.observationState.observe(viewLifecycleOwner,Observer{ObserveSearchResults()})
 
         }else{
+            progressToShow(false)
             search_field.setError(getString(R.string.validation_length_city_names))
         }
     }
@@ -118,18 +114,23 @@ class ScreenWeatherList : Fragment() {
     private fun initListView() {
         rv_city_weathers.apply {
             layoutManager= LinearLayoutManager(activity)
-            adapter = this@ScreenWeatherList.adapter
+            adapter = this@ScreenCityWeathersList.adapter
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ScreenWeatherList().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun setDataInList(it: CityWeathersViewModel.ResponseState.Success) {
+        list = it.response.toMutableList()
+        adapter.swapData(list)
+    }
+
+    fun progressToShow(toShow:Boolean){
+        when(toShow){
+            true -> progress.visibility = View.VISIBLE
+            else -> progress.visibility = View.GONE
+        }
+    }
+
+    fun getToast(message:String): Toast {
+        return Toast.makeText(context,message,Toast.LENGTH_LONG)
     }
 }

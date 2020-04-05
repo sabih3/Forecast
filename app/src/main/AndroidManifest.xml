@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".framework.ForecasterApplication">
-        <activity android:name="com.sahmed.forecaster.framework.presentation.MainActivity"
+        <activity android:name="com.sahmed.forecaster.framework.presentation.landing.MainActivity"
                   android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

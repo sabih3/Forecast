@@ -3,15 +3,15 @@ package com.sahmed.forecaster.framework.presentation.cities_weather
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.sahmed.core.domain.CityWeathers
-import com.sahmed.core.domain.Weather
-import com.sahmed.forecaster.framework.CityWeatherRemoteRepository
+import com.sahmed.forecaster.framework.ForecastRemoteRepository
+import com.sahmed.forecaster.framework.network.repo.CityWeatherRemoteRepository
 import com.sahmed.forecaster.framework.ForecasterViewModel
-import com.sahmed.forecaster.framework.Interactors
 
 class CityWeathersViewModel(application: Application,
-                            interactors: Interactors,
-                            cityWeatherRemoteRepository: CityWeatherRemoteRepository):
-    ForecasterViewModel(application,interactors,cityWeatherRemoteRepository){
+                            cityWeatherRemoteRepository: CityWeatherRemoteRepository,
+                            forecastRemoteRepository: ForecastRemoteRepository
+):
+    ForecasterViewModel(application,cityWeatherRemoteRepository,forecastRemoteRepository){
 
     private val dataState  = MutableLiveData<ResponseState>()
     val observationState = dataState
@@ -24,9 +24,12 @@ class CityWeathersViewModel(application: Application,
         object NetworkFailure :ResponseState()
     }
 
+
+
     fun getCityWeather(cityName: String){
         setResult(ResponseState.Loading)
-        cityWeatherRemoteRepository.getWeatherOfCities(cityName,object:CityWeatherRemoteRepository.CityWeatherCallback{
+        cityWeatherRemoteRepository.getWeatherOfCities(cityName,object:
+            CityWeatherRemoteRepository.CityWeatherCallback{
 
             override fun onSuccess(weather: List<CityWeathers>) {
 

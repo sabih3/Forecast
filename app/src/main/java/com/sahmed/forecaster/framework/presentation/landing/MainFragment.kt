@@ -1,4 +1,4 @@
-package com.sahmed.forecaster.framework
+package com.sahmed.forecaster.framework.presentation.landing
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 
 import com.sahmed.forecaster.R
-import com.sahmed.forecaster.framework.presentation.cities_weather.ScreenWeatherList
-import com.sahmed.forecaster.framework.presentation.city_forecast.ScreenWeatherForecast
 import kotlinx.android.synthetic.main.fragment_main.*
 
 private const val ARG_PARAM1 = "param1"

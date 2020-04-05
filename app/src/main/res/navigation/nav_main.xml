@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.sahmed.forecaster.framework.MainFragment"
+        android:name="com.sahmed.forecaster.framework.presentation.landing.MainFragment"
         android:label="Forecaster" >
         <action
             android:id="@+id/action_mainFragment_to_screenWeatherList"
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/screenWeatherList"
-        android:name="com.sahmed.forecaster.framework.presentation.cities_weather.ScreenWeatherList"
+        android:name="com.sahmed.forecaster.framework.presentation.cities_weather.ScreenCityWeathersList"
         android:label="City Weathers Information" />
     <fragment
         android:id="@+id/screenWeatherForecast"

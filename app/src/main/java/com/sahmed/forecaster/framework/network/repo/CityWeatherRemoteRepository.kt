@@ -1,9 +1,8 @@
-package com.sahmed.forecaster.framework
+package com.sahmed.forecaster.framework.network.repo
 
 import androidx.annotation.VisibleForTesting
 import com.sahmed.core.domain.CityWeathers
 import com.sahmed.core.domain.ResponseCityWeather
-import com.sahmed.core.domain.Weather
 import com.sahmed.forecaster.framework.network.APIs
 import com.sahmed.forecaster.framework.network.BaseCallback
 import com.sahmed.forecaster.framework.network.BaseRepo
@@ -31,7 +30,8 @@ class CityWeatherRemoteRepository(val remoteDataSource: APIs):BaseRepo() {
 
     @VisibleForTesting
     fun handleResponse(
-        response: Response<ResponseCityWeather>, callback: CityWeatherCallback) {
+        response: Response<ResponseCityWeather>, callback: CityWeatherCallback
+    ) {
         if(response.isSuccessful){
             if(response.body()!=null){
                 callback.onSuccess(response.body()!!.list)

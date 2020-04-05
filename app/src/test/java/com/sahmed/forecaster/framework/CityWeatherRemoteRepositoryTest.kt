@@ -3,6 +3,7 @@ package com.sahmed.forecaster.framework
 import com.sahmed.core.domain.CityWeathers
 import com.sahmed.core.domain.Weather
 import com.sahmed.forecaster.framework.network.APIs
+import com.sahmed.forecaster.framework.network.repo.CityWeatherRemoteRepository
 import org.junit.Before
 
 import org.junit.Test
@@ -24,7 +25,11 @@ class CityWeatherRemoteRepositoryTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        cityWeatherRepository = Mockito.spy(CityWeatherRemoteRepository(api))
+        cityWeatherRepository = Mockito.spy(
+            CityWeatherRemoteRepository(
+                api
+            )
+        )
     }
 
     @Test
