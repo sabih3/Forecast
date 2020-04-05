@@ -41,10 +41,10 @@ class CityWeathersListAdapter : RecyclerView.Adapter<CityWeathersListAdapter.Cit
         fun bind(item:CityWeathers) = with(itemView) {
             itemView.row_item_city_name.text = item.name
             itemView.row_item_temp.text =
-                        "Min :" +item.main.temp_min.toString() + UnitsFormatter.getTemperatureUnit()+
-                        " Max :"+item.main.temp_max.toString() + UnitsFormatter.getTemperatureUnit()
+                        "Min: " +item.main.temp_min.toString() + UnitsFormatter.getTemperatureUnit()+
+                        " Max: "+item.main.temp_max.toString() + UnitsFormatter.getTemperatureUnit()
 
-            itemView.row_item_wind.text = String.format("%.1f", (item.wind.speed!!*3.6))+" Km/h"
+            itemView.row_item_wind.text = String.format("Wind: %.1f", (item.wind.speed!!*3.6))+" Km/h"
 
         }
     }

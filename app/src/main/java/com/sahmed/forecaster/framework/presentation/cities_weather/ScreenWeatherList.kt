@@ -29,7 +29,6 @@ class ScreenWeatherList : Fragment() {
     private var param2: String? = null
     var adapter = CityWeathersListAdapter()
     var list = mutableListOf<CityWeathers>()
-    lateinit var cityData : List<CityData>
 
     private lateinit var viewModel: CityWeathersViewModel
 
@@ -102,6 +101,7 @@ class ScreenWeatherList : Fragment() {
     }
 
     private fun performSearch() {
+        progress.visibility = View.VISIBLE
         var input_city_names = search_field.text.toString().trim().split(",")
 
         if(input_city_names.size>=3 && input_city_names.size<=7){
