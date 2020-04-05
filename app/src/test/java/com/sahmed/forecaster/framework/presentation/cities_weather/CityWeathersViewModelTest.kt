@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import com.sahmed.core.domain.CityWeathers
 import com.sahmed.core.domain.ResponseCityWeather
 import com.sahmed.forecaster.framework.ForecastRemoteRepository
+import com.sahmed.forecaster.framework.LifeCycleTestOwner
 import com.sahmed.forecaster.framework.network.repo.CityWeatherRemoteRepository
 import com.sahmed.forecaster.framework.presentation.cities_weather.CityWeathersViewModel.ResponseState
 import io.mockk.MockKAnnotations
@@ -33,38 +34,37 @@ class CityWeathersViewModelTest{
     @JvmField
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    @MockK
+    private lateinit var lifecycleOwner: LifeCycleTestOwner
+
+    @Mock
     lateinit var application:Application
 
-    @MockK
+    @Mock
     lateinit var cityWeatherRemoteRepository:CityWeatherRemoteRepository
 
-    @MockK
+    @Mock
     lateinit var forecastRemoteRepository: ForecastRemoteRepository
 
-    @MockK
+    @Mock
     lateinit var viewStateObserver: Observer<ResponseState>
 
     @Before
     fun setup(){
 
-        MockKAnnotations.init(this)
-        cityWeathersModel = CityWeathersViewModel(application,
-                            cityWeatherRemoteRepository,forecastRemoteRepository)
+//        MockKAnnotations.init(this)
+        MockitoAnnotations.initMocks(this)
 
+        cityWeathersModel = Mockito.spy(CityWeathersViewModel(application,
+            cityWeatherRemoteRepository,forecastRemoteRepository))
+
+        lifecycleOwner = LifeCycleTestOwner()
+        lifecycleOwner.onCreate()
+        //cityWeathersModel.observationState.observe(lifecycleOwner,viewStateObserver)
 
     }
 
     @Test
     fun check(){
-
-        cityWeathersModel.observationState.observeForever(viewStateObserver)
-        cityWeathersModel.setResult(ResponseState.Loading)
-        verify(viewStateObserver).onChanged(ResponseState.Loading)
-
-
-
-
 
     }
 }
